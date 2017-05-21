@@ -4,18 +4,19 @@
   gather_facts: False
   vars:
     # vmname: mjainWeb01
-    # resgrp: PermanentLab
-    # vnet: PermanentLab-vnet
+    resgrp: ansibleLab
+    vnet: '{{ resgrp }}-vnet'
+    subnet: 'default'
     # Variables 'vnet', 'subnet', 'vmname' and 'resgrp' need to be provided at command line with arg --extra-vars
     dnsname: '{{ vmname }}.azurewebsites.net'
     # The DNS name might not be right depending on your region!!
     ip: "{{ lookup ('dig', '{{ dnsname }}') }}"
    
   tasks:
-  - debug: msg="Public DNS name {{ dnsname }} resolved to IP {{ ip }}. "
-  - name: Check if DNS is taken
-    fail: msg="That DNS name seems to be already taken"
-    when: ip != 'NXDOMAIN'
+#  - debug: msg="Public DNS name {{ dnsname }} resolved to IP {{ ip }}. "
+#  - name: Check if DNS is taken
+#    fail: msg="That DNS name seems to be already taken"
+#    when: ip != 'NXDOMAIN'
   - name: Create storage account
     azure_rm_storageaccount:
       resource_group: '{{ resgrp }}'
@@ -61,7 +62,7 @@
       storage_blob: '{{ vmname }}.vhd'
       network_interfaces: '{{ vmname }}'
       vm_size: Standard_A0
-      admin_username: jose
+      admin_username: mjain
       ssh_password_enabled: False
       ssh_public_keys: 
         - path: /home/mjain/.ssh/authorized_keys
@@ -71,5 +72,5 @@
       image:
         offer: CentOS
         publisher: OpenLogic
-        sku: '7.2'
+        sku: '7.3'
         version: latest

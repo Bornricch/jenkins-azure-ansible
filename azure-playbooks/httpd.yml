@@ -10,7 +10,7 @@
     become: true
   - name: Download index.html
     get_url:
-      url: https://raw.githubusercontent.com/erjosito/Azure-Ansible-Examples/master/index.html
+      url: https://raw.githubusercontent.com/jainmnsh/jenkins-azure-ansible/master/index.html
       dest: /var/www/html/index.html
       mode: 0644
   - name: Ensure apache is running (and enable it at boot)
